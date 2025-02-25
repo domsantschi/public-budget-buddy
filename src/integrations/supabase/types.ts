@@ -9,7 +9,33 @@ export type Json =
 export type Database = {
   public: {
     Tables: {
-      [_ in never]: never
+      budget_accounts: {
+        Row: {
+          account_number: number
+          category: Database["public"]["Enums"]["account_category"]
+          created_at: string
+          id: number
+          name: string
+          updated_at: string
+        }
+        Insert: {
+          account_number: number
+          category: Database["public"]["Enums"]["account_category"]
+          created_at?: string
+          id?: number
+          name: string
+          updated_at?: string
+        }
+        Update: {
+          account_number?: number
+          category?: Database["public"]["Enums"]["account_category"]
+          created_at?: string
+          id?: number
+          name?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
@@ -18,7 +44,13 @@ export type Database = {
       [_ in never]: never
     }
     Enums: {
-      [_ in never]: never
+      account_category:
+        | "Aktiven"
+        | "Passiven"
+        | "Aufwand"
+        | "Ertrag"
+        | "Investitionsausgaben"
+        | "Investitionseinnahmen"
     }
     CompositeTypes: {
       [_ in never]: never
