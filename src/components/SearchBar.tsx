@@ -29,6 +29,53 @@ interface BudgetAccount {
   category: string;
 }
 
+const DEMO_ACCOUNTS: BudgetAccount[] = [
+  { id: 1, account_number: 1, name: "Aktiven", category: "Aktiven" },
+  { id: 2, account_number: 2, name: "Passiven", category: "Passiven" },
+  { id: 3, account_number: 3, name: "Aufwand", category: "Aufwand" },
+  { id: 4, account_number: 4, name: "Ertrag", category: "Ertrag" },
+  { id: 5, account_number: 5, name: "Investitionsausgaben gesamt", category: "Investitionsausgaben" },
+  { id: 6, account_number: 6, name: "Investitionseinnahmen gesamt", category: "Investitionseinnahmen" },
+  { id: 7, account_number: 30, name: "Personalaufwand", category: "Aufwand" },
+  { id: 8, account_number: 31, name: "Sach- und übriger Betriebsaufwand", category: "Aufwand" },
+  { id: 9, account_number: 33, name: "Abschreibungen VV", category: "Aufwand" },
+  { id: 10, account_number: 35, name: "Einlagen in Fonds und Spezialfinanzierungen", category: "Aufwand" },
+  { id: 11, account_number: 36, name: "Transferaufwand", category: "Aufwand" },
+  { id: 12, account_number: 37, name: "Durchlaufende Beiträge", category: "Aufwand" },
+  { id: 13, account_number: 39, name: "Interne Verrechungen", category: "Aufwand" },
+  { id: 14, account_number: 40, name: "Fiskalertrag", category: "Ertrag" },
+  { id: 15, account_number: 41, name: "Regalien und Konzessionen", category: "Ertrag" },
+  { id: 16, account_number: 42, name: "Entgelte", category: "Ertrag" },
+  { id: 17, account_number: 43, name: "Verschiedene Erträge", category: "Ertrag" },
+  { id: 18, account_number: 45, name: "Entnahmen aus Fonds und Spezialfinanzierungen", category: "Ertrag" },
+  { id: 19, account_number: 46, name: "Transferertrag", category: "Ertrag" },
+  { id: 20, account_number: 47, name: "Durchlaufende Beiträge", category: "Ertrag" },
+  { id: 21, account_number: 49, name: "Interne Verrechnungen", category: "Ertrag" },
+  { id: 22, account_number: 34, name: "Finanzaufwand", category: "Aufwand" },
+  { id: 23, account_number: 44, name: "Finanzertrag", category: "Ertrag" },
+  { id: 24, account_number: 38, name: "Ausserordentlicher Aufwand", category: "Aufwand" },
+  { id: 25, account_number: 48, name: "Ausserordentlicher Ertrag", category: "Ertrag" },
+  { id: 26, account_number: 50, name: "Sachanlagen", category: "Investitionsausgaben" },
+  { id: 27, account_number: 51, name: "Investitionen auf Rechnung Dritter", category: "Investitionsausgaben" },
+  { id: 28, account_number: 52, name: "Immaterielle Anlagen", category: "Investitionsausgaben" },
+  { id: 29, account_number: 54, name: "Darlehen", category: "Investitionsausgaben" },
+  { id: 30, account_number: 55, name: "Beteiligungen und Grundkapitalien", category: "Investitionsausgaben" },
+  { id: 31, account_number: 56, name: "Eigene Investitionsbeiträge", category: "Investitionsausgaben" },
+  { id: 32, account_number: 57, name: "Durchlaufende Investitionsbeiträge", category: "Investitionsausgaben" },
+  { id: 33, account_number: 58, name: "Ausserordentliche Investitionen", category: "Investitionsausgaben" },
+  { id: 34, account_number: 60, name: "Übertragung von Sachanlagen in das FV", category: "Investitionseinnahmen" },
+  { id: 35, account_number: 61, name: "Rückerstattungen Dritter für Investitionen", category: "Investitionseinnahmen" },
+  { id: 36, account_number: 62, name: "Abgang immaterielle Anlagen", category: "Investitionseinnahmen" },
+  { id: 37, account_number: 63, name: "Investitionsbeiträge für eigene Rechnung", category: "Investitionseinnahmen" },
+  { id: 38, account_number: 64, name: "Rückzahlung von Darlehen", category: "Investitionseinnahmen" },
+  { id: 39, account_number: 65, name: "Übertragung von Beteiligungen", category: "Investitionseinnahmen" },
+  { id: 40, account_number: 66, name: "Rückzahlung eigener Investitionsbeiträge", category: "Investitionseinnahmen" },
+  { id: 41, account_number: 67, name: "Durchlaufende Investitionsbeiträge", category: "Investitionseinnahmen" },
+  { id: 42, account_number: 68, name: "Ausserordentliche Investitionseinnahmen", category: "Investitionseinnahmen" },
+  { id: 43, account_number: 14, name: "Verwaltungsvermögen", category: "Aktiven" },
+  { id: 44, account_number: 29, name: "Eigenkapital", category: "Passiven" }
+];
+
 const SWISS_CANTONS = [
   { value: "ZH", label: "Zürich", logo: "/cantons/zurich.svg" },
   { value: "BE", label: "Bern", logo: "/cantons/bern.svg" },
@@ -61,49 +108,10 @@ const SWISS_CANTONS = [
 const SearchBar = () => {
   const [open, setOpen] = useState(false);
   const [search, setSearch] = useState("");
-  const [accounts, setAccounts] = useState<BudgetAccount[]>([]);
+  const [accounts, setAccounts] = useState<BudgetAccount[]>(DEMO_ACCOUNTS);
   const [loading, setLoading] = useState(false);
   const [selectedCanton, setSelectedCanton] = useState<string>("");
   const navigate = useNavigate();
-
-  useEffect(() => {
-    const searchAccounts = async () => {
-      try {
-        setLoading(true);
-        
-        if (!search.trim()) {
-          const { data, error } = await supabase
-            .from('budget_accounts')
-            .select('*')
-            .order('account_number');
-
-          if (error) throw error;
-          setAccounts(data || []);
-          return;
-        }
-
-        const { data, error } = await supabase
-          .from('budget_accounts')
-          .select('*')
-          .or(`name.ilike.%${search}%,account_number.eq.${!isNaN(Number(search)) ? search : 0}`)
-          .order('account_number');
-
-        if (error) {
-          console.error('Error fetching accounts:', error);
-          return;
-        }
-
-        setAccounts(data || []);
-      } catch (error) {
-        console.error('Error:', error);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    const timeoutId = setTimeout(searchAccounts, 300);
-    return () => clearTimeout(timeoutId);
-  }, [search]);
 
   useEffect(() => {
     const down = (e: KeyboardEvent) => {
@@ -129,7 +137,7 @@ const SearchBar = () => {
     return colors[category] || 'bg-gray-500';
   };
 
-  const filteredAccounts = accounts.filter(account => {
+  const filteredAccounts = DEMO_ACCOUNTS.filter(account => {
     if (!search.trim()) return true;
     
     return (
