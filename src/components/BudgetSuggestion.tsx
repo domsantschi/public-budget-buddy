@@ -33,6 +33,11 @@ interface BudgetSuggestion {
   confidence: number;
 }
 
+interface BudgetSuggestionProps {
+  selectedCanton?: string;
+  selectedAccount?: { id: number; account_number: number; name: string; category: string; } | null;
+}
+
 const historicalData = [
   { year: '2010', actual: 1500000, projected: null },
   { year: '2011', actual: 1600000, projected: null },
@@ -57,7 +62,7 @@ const historicalData = [
   { year: '2030', actual: null, projected: 3650000 }
 ];
 
-const BudgetSuggestion = () => {
+const BudgetSuggestion = ({ selectedCanton, selectedAccount }: BudgetSuggestionProps) => {
   const [suggestion, setSuggestion] = useState<BudgetSuggestion>({
     amount: 0,
     change: 0,
@@ -74,7 +79,7 @@ const BudgetSuggestion = () => {
       change: +(Math.random() * 8 + 2).toFixed(1), // Random change between 2% and 10%
       confidence: Math.floor(Math.random() * 15 + 85) // Random confidence between 85% and 99%
     });
-  }, []);
+  }, [selectedCanton, selectedAccount]); // Re-run when filters change
 
   const formatCHF = (amount: number) => {
     return amount.toLocaleString('de-CH', { 

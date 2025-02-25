@@ -29,6 +29,13 @@ interface BudgetAccount {
   category: string;
 }
 
+interface SearchBarProps {
+  onCantonChange: (canton: string) => void;
+  onAccountChange: (account: BudgetAccount | null) => void;
+  initialCanton: string;
+  initialAccount: BudgetAccount | null;
+}
+
 const SWISS_CANTONS = [
   { value: "AG", label: "Aargau" },
   { value: "AI", label: "Appenzell Innerrhoden" },
@@ -105,13 +112,13 @@ const DEMO_ACCOUNTS: BudgetAccount[] = [
   { id: 44, account_number: 29, name: "Eigenkapital", category: "Passiven" }
 ];
 
-const SearchBar = () => {
+const SearchBar = ({ onCantonChange, onAccountChange, initialCanton, initialAccount }: SearchBarProps) => {
   const [open, setOpen] = useState(false);
   const [search, setSearch] = useState("");
   const [accounts, setAccounts] = useState<BudgetAccount[]>(DEMO_ACCOUNTS);
   const [loading, setLoading] = useState(false);
-  const [selectedCanton, setSelectedCanton] = useState<string>("");
-  const [selectedAccount, setSelectedAccount] = useState<BudgetAccount | null>(null);
+  const [selectedCanton, setSelectedCanton] = useState<string>(initialCanton);
+  const [selectedAccount, setSelectedAccount] = useState<BudgetAccount | null>(initialAccount);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -148,12 +155,23 @@ const SearchBar = () => {
     );
   });
 
+  const handleCantonChange = (value: string) => {
+    setSelectedCanton(value);
+    onCantonChange(value);
+  };
+
+  const handleAccountSelect = (account: BudgetAccount) => {
+    setSelectedAccount(account);
+    onAccountChange(account);
+    setOpen(false);
+  };
+
   const selectedCantonData = SWISS_CANTONS.find(canton => canton.value === selectedCanton);
 
   return (
     <div className="space-y-4">
       <div className="w-full max-w-xs">
-        <Select value={selectedCanton} onValueChange={setSelectedCanton}>
+        <Select value={selectedCanton} onValueChange={handleCantonChange}>
           <SelectTrigger className="w-full">
             <SelectValue placeholder="Select a canton">
               {selectedCantonData?.label}
@@ -223,10 +241,7 @@ const SearchBar = () => {
                   <CommandItem
                     key={account.id}
                     value={`${account.account_number} ${account.name}`}
-                    onSelect={() => {
-                      setSelectedAccount(account);
-                      setOpen(false);
-                    }}
+                    onSelect={() => handleAccountSelect(account)}
                   >
                     <div className="flex items-center gap-2">
                       <Badge variant="secondary">
