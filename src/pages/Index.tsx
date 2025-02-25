@@ -32,10 +32,10 @@ const Index = () => {
           />
         </div>
 
-        {/* Main Content - Three Column Layout */}
+        {/* Main Content - Three Column Layout with consistent spacing */}
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
           {/* Left Column - Budget Analysis */}
-          <div className="space-y-6">
+          <div className="space-y-6 w-full">
             <BudgetSuggestion 
               selectedCanton={selectedCanton}
               selectedAccount={selectedAccount}
@@ -44,12 +44,12 @@ const Index = () => {
           </div>
 
           {/* Middle Column - Chat */}
-          <div className="flex h-full">
+          <div className="w-full">
             <ChatInterface />
           </div>
 
           {/* Right Column - Export Preview */}
-          <div className="flex h-full">
+          <div className="w-full">
             <ExportPreview 
               selectedCanton={selectedCanton}
               selectedAccount={selectedAccount}

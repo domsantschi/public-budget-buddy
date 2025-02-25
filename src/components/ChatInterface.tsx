@@ -47,7 +47,7 @@ const ChatInterface = () => {
   };
 
   return (
-    <Card className="flex flex-col h-full animate-fade-in bg-white/50 backdrop-blur-sm">
+    <Card className="w-full h-full flex flex-col animate-fade-in bg-white/50 backdrop-blur-sm">
       <div className="p-4 border-b">
         <div className="flex items-center space-x-2">
           <MessageSquare className="h-5 w-5 text-muted-foreground" />
