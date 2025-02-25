@@ -16,14 +16,15 @@ import {
   DialogDescription,
 } from "./ui/dialog";
 import {
-  LineChart,
-  Line,
+  BarChart,
+  Bar,
   XAxis,
   YAxis,
   CartesianGrid,
   Tooltip,
   Legend,
-  ResponsiveContainer
+  ResponsiveContainer,
+  ReferenceLine
 } from 'recharts';
 
 interface BudgetSuggestion {
@@ -33,12 +34,27 @@ interface BudgetSuggestion {
 }
 
 const historicalData = [
+  { year: '2010', actual: 1500000, projected: null },
+  { year: '2011', actual: 1600000, projected: null },
+  { year: '2012', actual: 1680000, projected: null },
+  { year: '2013', actual: 1750000, projected: null },
+  { year: '2014', actual: 1850000, projected: null },
+  { year: '2015', actual: 1920000, projected: null },
+  { year: '2016', actual: 2000000, projected: null },
+  { year: '2017', actual: 2100000, projected: null },
+  { year: '2018', actual: 2200000, projected: null },
+  { year: '2019', actual: 2300000, projected: null },
   { year: '2020', actual: 2200000, projected: null },
   { year: '2021', actual: 2350000, projected: null },
   { year: '2022', actual: 2600000, projected: null },
   { year: '2023', actual: 2750000, projected: null },
-  { year: '2024', actual: null, projected: 2890000 },
-  { year: '2025', actual: null, projected: 3050000 },
+  { year: '2024', actual: 2800000, projected: null },
+  { year: '2025', actual: null, projected: 2890000 },
+  { year: '2026', actual: null, projected: 3050000 },
+  { year: '2027', actual: null, projected: 3200000 },
+  { year: '2028', actual: null, projected: 3350000 },
+  { year: '2029', actual: null, projected: 3500000 },
+  { year: '2030', actual: null, projected: 3650000 }
 ];
 
 const BudgetSuggestion = () => {
@@ -92,7 +108,7 @@ const BudgetSuggestion = () => {
       <Dialog open={showDetails} onOpenChange={setShowDetails}>
         <DialogContent className="sm:max-w-[800px]">
           <DialogHeader>
-            <DialogTitle>Budget History & Projections</DialogTitle>
+            <DialogTitle>Budget History & Projections (2010-2030)</DialogTitle>
             <DialogDescription>
               Historical budget data and future projections based on current trends and economic indicators
             </DialogDescription>
@@ -100,9 +116,16 @@ const BudgetSuggestion = () => {
           
           <div className="h-[400px] mt-4">
             <ResponsiveContainer width="100%" height="100%">
-              <LineChart data={historicalData} margin={{ top: 5, right: 30, left: 20, bottom: 5 }}>
+              <BarChart data={historicalData} margin={{ top: 5, right: 30, left: 20, bottom: 25 }}>
                 <CartesianGrid strokeDasharray="3 3" />
-                <XAxis dataKey="year" />
+                <XAxis 
+                  dataKey="year" 
+                  angle={-45}
+                  textAnchor="end"
+                  height={60}
+                  interval={0}
+                  tick={{ fontSize: 12 }}
+                />
                 <YAxis 
                   tickFormatter={(value) => `$${(value/1000000).toFixed(1)}M`}
                 />
@@ -110,24 +133,30 @@ const BudgetSuggestion = () => {
                   formatter={(value) => [`$${Number(value).toLocaleString()}`, '']}
                 />
                 <Legend />
-                <Line 
-                  type="monotone" 
+                <ReferenceLine 
+                  x="2025" 
+                  stroke="#ff0000" 
+                  label={{ 
+                    value: "Current Year", 
+                    position: "top",
+                    fill: "#ff0000",
+                    fontSize: 12 
+                  }} 
+                />
+                <Bar 
                   dataKey="actual" 
-                  stroke="#0ea5e9" 
+                  fill="#0ea5e9" 
                   name="Historical Budget"
-                  strokeWidth={2}
-                  dot={{ r: 4 }}
                 />
-                <Line 
-                  type="monotone" 
+                <Bar 
                   dataKey="projected" 
-                  stroke="#22c55e" 
+                  fill="#22c55e" 
                   name="Projected Budget"
-                  strokeWidth={2}
-                  strokeDasharray="5 5"
-                  dot={{ r: 4 }}
+                  pattern={[
+                    { id: 'pattern1', path: 'M 3 3 L 8 8 M 8 3 L 3 8', strokeWidth: 1, stroke: '#fff', fill: '#22c55e' }
+                  ]}
                 />
-              </LineChart>
+              </BarChart>
             </ResponsiveContainer>
           </div>
         </DialogContent>
