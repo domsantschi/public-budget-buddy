@@ -145,7 +145,7 @@ const BudgetSuggestion = ({ selectedCanton, selectedAccount }: BudgetSuggestionP
               <BarChart data={historicalData} margin={{ top: 5, right: 30, left: 20, bottom: 25 }}>
                 <defs>
                   <pattern id="projectedPattern" patternUnits="userSpaceOnUse" width="4" height="4">
-                    <path d="M 0 0 L 4 4 M 4 0 L 0 4" strokeWidth="1" stroke="#fff" fill="#22c55e"/>
+                    <path d="M 0 0 L 4 4 M 4 0 L 0 4" strokeWidth="1" stroke="#333333" fill="#22c55e"/>
                   </pattern>
                 </defs>
                 <CartesianGrid strokeDasharray="3 3" />
