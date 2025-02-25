@@ -11,6 +11,7 @@ import {
   CommandInput,
   CommandItem,
   CommandList,
+  CommandTitle,
 } from "@/components/ui/command";
 import { useNavigate } from "react-router-dom";
 import { Badge } from "./ui/badge";
@@ -33,15 +34,10 @@ const SearchBar = () => {
     const searchAccounts = async () => {
       try {
         setLoading(true);
-        let query = supabase
+        const { data, error } = await supabase
           .from('budget_accounts')
-          .select('*');
-
-        if (search) {
-          query = query.or(`name.ilike.%${search}%,category.ilike.%${search}%`);
-        }
-
-        const { data, error } = await query;
+          .select('*')
+          .ilike('name', `%${search}%`)
 
         if (error) {
           console.error('Error fetching accounts:', error);
@@ -99,8 +95,9 @@ const SearchBar = () => {
       </div>
 
       <CommandDialog open={open} onOpenChange={setOpen}>
+        <DialogTitle className="text-center">Search Budget Accounts</DialogTitle>
         <CommandInput 
-          placeholder="Search accounts by name or category..."
+          placeholder="Search accounts by name..."
           value={search}
           onValueChange={setSearch}
         />
