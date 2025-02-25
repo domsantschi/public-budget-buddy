@@ -33,7 +33,7 @@ const Index = () => {
         </div>
 
         {/* Main Content - Three Column Layout */}
-        <div className="grid gap-6 lg:grid-cols-3">
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
           {/* Left Column - Budget Analysis */}
           <div className="space-y-6">
             <BudgetSuggestion 
