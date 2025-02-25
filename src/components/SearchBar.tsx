@@ -11,8 +11,8 @@ import {
   CommandInput,
   CommandItem,
   CommandList,
-  CommandTitle,
 } from "@/components/ui/command";
+import { DialogTitle } from "@/components/ui/dialog";
 import { useNavigate } from "react-router-dom";
 import { Badge } from "./ui/badge";
 
@@ -95,7 +95,7 @@ const SearchBar = () => {
       </div>
 
       <CommandDialog open={open} onOpenChange={setOpen}>
-        <DialogTitle className="text-center">Search Budget Accounts</DialogTitle>
+        <DialogTitle className="text-center p-2">Search Budget Accounts</DialogTitle>
         <CommandInput 
           placeholder="Search accounts by name..."
           value={search}
