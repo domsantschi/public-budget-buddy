@@ -111,6 +111,7 @@ const SearchBar = () => {
   const [accounts, setAccounts] = useState<BudgetAccount[]>(DEMO_ACCOUNTS);
   const [loading, setLoading] = useState(false);
   const [selectedCanton, setSelectedCanton] = useState<string>("");
+  const [selectedAccount, setSelectedAccount] = useState<BudgetAccount | null>(null);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -194,11 +195,21 @@ const SearchBar = () => {
         </div>
         <Input 
           type="search" 
-          placeholder="Search budget accounts... (Press ⌘K)" 
+          placeholder={selectedAccount 
+            ? `${selectedAccount.account_number} - ${selectedAccount.name}`
+            : "Search budget accounts... (Press ⌘K)"
+          }
           className="pl-10 bg-white/50 backdrop-blur-sm border-muted"
           onClick={() => setOpen(true)}
           readOnly
         />
+        {selectedAccount && (
+          <Badge 
+            className={`absolute right-3 top-1/2 -translate-y-1/2 ${getCategoryColor(selectedAccount.category)} text-white`}
+          >
+            {selectedAccount.category}
+          </Badge>
+        )}
       </div>
 
       <CommandDialog open={open} onOpenChange={setOpen}>
@@ -230,7 +241,7 @@ const SearchBar = () => {
                     key={account.id}
                     value={`${account.account_number} ${account.name}`}
                     onSelect={() => {
-                      console.log('Selected:', account);
+                      setSelectedAccount(account);
                       setOpen(false);
                     }}
                   >
