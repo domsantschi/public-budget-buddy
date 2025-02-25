@@ -34,10 +34,25 @@ const SearchBar = () => {
     const searchAccounts = async () => {
       try {
         setLoading(true);
+        
+        // If search is empty, fetch all accounts
+        if (!search.trim()) {
+          const { data, error } = await supabase
+            .from('budget_accounts')
+            .select('*')
+            .order('account_number');
+
+          if (error) throw error;
+          setAccounts(data || []);
+          return;
+        }
+
+        // Search by name and number
         const { data, error } = await supabase
           .from('budget_accounts')
           .select('*')
-          .ilike('name', `%${search}%`)
+          .or(`name.ilike.%${search}%,account_number.eq.${!isNaN(Number(search)) ? search : 0}`)
+          .order('account_number');
 
         if (error) {
           console.error('Error fetching accounts:', error);
@@ -52,7 +67,9 @@ const SearchBar = () => {
       }
     };
 
-    searchAccounts();
+    // Debounce search to avoid too many requests
+    const timeoutId = setTimeout(searchAccounts, 300);
+    return () => clearTimeout(timeoutId);
   }, [search]);
 
   useEffect(() => {
@@ -79,6 +96,17 @@ const SearchBar = () => {
     return colors[category] || 'bg-gray-500';
   };
 
+  // Client-side filtering for categories
+  const filteredAccounts = accounts.filter(account => {
+    if (!search.trim()) return true;
+    
+    return (
+      account.name.toLowerCase().includes(search.toLowerCase()) ||
+      account.category.toLowerCase().includes(search.toLowerCase()) ||
+      account.account_number.toString().includes(search)
+    );
+  });
+
   return (
     <>
       <div className="relative w-full max-w-xl">
@@ -97,7 +125,7 @@ const SearchBar = () => {
       <CommandDialog open={open} onOpenChange={setOpen}>
         <DialogTitle className="text-center p-2">Search Budget Accounts</DialogTitle>
         <CommandInput 
-          placeholder="Search accounts by name..."
+          placeholder="Search by name, number, or category..."
           value={search}
           onValueChange={setSearch}
         />
@@ -109,7 +137,7 @@ const SearchBar = () => {
             </CommandGroup>
           ) : (
             Object.entries(
-              accounts.reduce((acc: { [key: string]: BudgetAccount[] }, account) => {
+              filteredAccounts.reduce((acc: { [key: string]: BudgetAccount[] }, account) => {
                 if (!acc[account.category]) {
                   acc[account.category] = [];
                 }
@@ -122,6 +150,10 @@ const SearchBar = () => {
                   <CommandItem
                     key={account.id}
                     value={`${account.account_number} ${account.name}`}
+                    onSelect={() => {
+                      console.log('Selected:', account);
+                      setOpen(false);
+                    }}
                   >
                     <div className="flex items-center gap-2">
                       <Badge variant="secondary">
