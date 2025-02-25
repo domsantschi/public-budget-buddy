@@ -19,7 +19,7 @@ const ExportPreview = ({ selectedCanton, selectedAccount }: ExportPreviewProps) 
   const [notes, setNotes] = useState("");
 
   return (
-    <Card className="h-[500px] flex flex-col animate-fade-in bg-white/50 backdrop-blur-sm">
+    <Card className="h-full flex flex-col animate-fade-in bg-white/50 backdrop-blur-sm">
       <div className="p-4 border-b flex justify-between items-center">
         <div className="flex items-center space-x-2">
           <FileText className="h-5 w-5 text-muted-foreground" />

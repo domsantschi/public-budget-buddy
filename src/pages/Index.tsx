@@ -44,12 +44,12 @@ const Index = () => {
           </div>
 
           {/* Middle Column - Chat */}
-          <div>
+          <div className="flex h-full">
             <ChatInterface />
           </div>
 
           {/* Right Column - Export Preview */}
-          <div>
+          <div className="flex h-full">
             <ExportPreview 
               selectedCanton={selectedCanton}
               selectedAccount={selectedAccount}
