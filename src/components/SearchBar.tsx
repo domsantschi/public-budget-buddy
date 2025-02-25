@@ -29,6 +29,35 @@ interface BudgetAccount {
   category: string;
 }
 
+const SWISS_CANTONS = [
+  { value: "ZH", label: "Zürich" },
+  { value: "BE", label: "Bern" },
+  { value: "LU", label: "Luzern" },
+  { value: "UR", label: "Uri" },
+  { value: "SZ", label: "Schwyz" },
+  { value: "OW", label: "Obwalden" },
+  { value: "NW", label: "Nidwalden" },
+  { value: "GL", label: "Glarus" },
+  { value: "ZG", label: "Zug" },
+  { value: "FR", label: "Freiburg" },
+  { value: "SO", label: "Solothurn" },
+  { value: "BS", label: "Basel-Stadt" },
+  { value: "BL", label: "Basel-Landschaft" },
+  { value: "SH", label: "Schaffhausen" },
+  { value: "AR", label: "Appenzell Ausserrhoden" },
+  { value: "AI", label: "Appenzell Innerrhoden" },
+  { value: "SG", label: "St. Gallen" },
+  { value: "GR", label: "Graubünden" },
+  { value: "AG", label: "Aargau" },
+  { value: "TG", label: "Thurgau" },
+  { value: "TI", label: "Ticino" },
+  { value: "VD", label: "Vaud" },
+  { value: "VS", label: "Valais" },
+  { value: "NE", label: "Neuchâtel" },
+  { value: "GE", label: "Geneva" },
+  { value: "JU", label: "Jura" }
+];
+
 const DEMO_ACCOUNTS: BudgetAccount[] = [
   { id: 1, account_number: 1, name: "Aktiven", category: "Aktiven" },
   { id: 2, account_number: 2, name: "Passiven", category: "Passiven" },
@@ -74,35 +103,6 @@ const DEMO_ACCOUNTS: BudgetAccount[] = [
   { id: 42, account_number: 68, name: "Ausserordentliche Investitionseinnahmen", category: "Investitionseinnahmen" },
   { id: 43, account_number: 14, name: "Verwaltungsvermögen", category: "Aktiven" },
   { id: 44, account_number: 29, name: "Eigenkapital", category: "Passiven" }
-];
-
-const SWISS_CANTONS = [
-  { value: "ZH", label: "Zürich", logo: "/cantons/zurich.svg" },
-  { value: "BE", label: "Bern", logo: "/cantons/bern.svg" },
-  { value: "LU", label: "Luzern", logo: "/cantons/lucerne.svg" },
-  { value: "UR", label: "Uri", logo: "/cantons/uri.svg" },
-  { value: "SZ", label: "Schwyz", logo: "/cantons/schwyz.svg" },
-  { value: "OW", label: "Obwalden", logo: "/cantons/obwalden.svg" },
-  { value: "NW", label: "Nidwalden", logo: "/cantons/nidwalden.svg" },
-  { value: "GL", label: "Glarus", logo: "/cantons/glarus.svg" },
-  { value: "ZG", label: "Zug", logo: "/cantons/zug.svg" },
-  { value: "FR", label: "Freiburg", logo: "/cantons/fribourg.svg" },
-  { value: "SO", label: "Solothurn", logo: "/cantons/solothurn.svg" },
-  { value: "BS", label: "Basel-Stadt", logo: "/cantons/basel-city.svg" },
-  { value: "BL", label: "Basel-Landschaft", logo: "/cantons/basel-country.svg" },
-  { value: "SH", label: "Schaffhausen", logo: "/cantons/schaffhausen.svg" },
-  { value: "AR", label: "Appenzell Ausserrhoden", logo: "/cantons/appenzell-outer.svg" },
-  { value: "AI", label: "Appenzell Innerrhoden", logo: "/cantons/appenzell-inner.svg" },
-  { value: "SG", label: "St. Gallen", logo: "/cantons/st-gallen.svg" },
-  { value: "GR", label: "Graubünden", logo: "/cantons/graubunden.svg" },
-  { value: "AG", label: "Aargau", logo: "/cantons/aargau.svg" },
-  { value: "TG", label: "Thurgau", logo: "/cantons/thurgau.svg" },
-  { value: "TI", label: "Ticino", logo: "/cantons/ticino.svg" },
-  { value: "VD", label: "Vaud", logo: "/cantons/vaud.svg" },
-  { value: "VS", label: "Valais", logo: "/cantons/valais.svg" },
-  { value: "NE", label: "Neuchâtel", logo: "/cantons/neuchatel.svg" },
-  { value: "GE", label: "Geneva", logo: "/cantons/geneva.svg" },
-  { value: "JU", label: "Jura", logo: "/cantons/jura.svg" }
 ];
 
 const SearchBar = () => {
@@ -156,16 +156,7 @@ const SearchBar = () => {
         <Select value={selectedCanton} onValueChange={setSelectedCanton}>
           <SelectTrigger className="w-full">
             <SelectValue placeholder="Select a canton">
-              {selectedCantonData && (
-                <div className="flex items-center gap-2">
-                  <img 
-                    src={selectedCantonData.logo}
-                    alt={`${selectedCantonData.label} canton flag`}
-                    className="w-5 h-5 object-contain"
-                  />
-                  <span>{selectedCantonData.label}</span>
-                </div>
-              )}
+              {selectedCantonData?.label}
             </SelectValue>
           </SelectTrigger>
           <SelectContent>
@@ -173,16 +164,8 @@ const SearchBar = () => {
               <SelectItem 
                 key={canton.value} 
                 value={canton.value}
-                className="flex items-center gap-2"
               >
-                <div className="flex items-center gap-2">
-                  <img 
-                    src={canton.logo}
-                    alt={`${canton.label} canton flag`}
-                    className="w-5 h-5 object-contain"
-                  />
-                  <span>{canton.label}</span>
-                </div>
+                {canton.label}
               </SelectItem>
             ))}
           </SelectContent>
