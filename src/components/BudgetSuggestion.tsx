@@ -39,27 +39,27 @@ interface BudgetSuggestionProps {
 }
 
 const historicalData = [
-  { year: '2010', actual: 1500000, projected: null },
-  { year: '2011', actual: 1600000, projected: null },
-  { year: '2012', actual: 1680000, projected: null },
-  { year: '2013', actual: 1750000, projected: null },
-  { year: '2014', actual: 1850000, projected: null },
-  { year: '2015', actual: 1920000, projected: null },
-  { year: '2016', actual: 2000000, projected: null },
-  { year: '2017', actual: 2100000, projected: null },
-  { year: '2018', actual: 2200000, projected: null },
-  { year: '2019', actual: 2300000, projected: null },
-  { year: '2020', actual: 2200000, projected: null },
-  { year: '2021', actual: 2350000, projected: null },
-  { year: '2022', actual: 2600000, projected: null },
-  { year: '2023', actual: 2750000, projected: null },
-  { year: '2024', actual: 2800000, projected: null },
-  { year: '2025', actual: null, projected: 2890000 },
-  { year: '2026', actual: null, projected: 3050000 },
-  { year: '2027', actual: null, projected: 3200000 },
-  { year: '2028', actual: null, projected: 3350000 },
-  { year: '2029', actual: null, projected: 3500000 },
-  { year: '2030', actual: null, projected: 3650000 }
+  { year: '2010', actual: 1500000, budget: 1450000, performance: 50000, projected: null },
+  { year: '2011', actual: 1600000, budget: 1650000, performance: -50000, projected: null },
+  { year: '2012', actual: 1680000, budget: 1600000, performance: 80000, projected: null },
+  { year: '2013', actual: 1750000, budget: 1800000, performance: -50000, projected: null },
+  { year: '2014', actual: 1850000, budget: 1750000, performance: 100000, projected: null },
+  { year: '2015', actual: 1920000, budget: 1850000, performance: 70000, projected: null },
+  { year: '2016', actual: 2000000, budget: 2100000, performance: -100000, projected: null },
+  { year: '2017', actual: 2100000, budget: 2000000, performance: 100000, projected: null },
+  { year: '2018', actual: 2200000, budget: 2150000, performance: 50000, projected: null },
+  { year: '2019', actual: 2300000, budget: 2250000, performance: 50000, projected: null },
+  { year: '2020', actual: 2200000, budget: 2400000, performance: -200000, projected: null },
+  { year: '2021', actual: 2350000, budget: 2300000, performance: 50000, projected: null },
+  { year: '2022', actual: 2600000, budget: 2500000, performance: 100000, projected: null },
+  { year: '2023', actual: 2750000, budget: 2700000, performance: 50000, projected: null },
+  { year: '2024', actual: 2800000, budget: 2850000, performance: -50000, projected: null },
+  { year: '2025', actual: null, budget: null, performance: null, projected: 2890000 },
+  { year: '2026', actual: null, budget: null, performance: null, projected: 3050000 },
+  { year: '2027', actual: null, budget: null, performance: null, projected: 3200000 },
+  { year: '2028', actual: null, budget: null, performance: null, projected: 3350000 },
+  { year: '2029', actual: null, budget: null, performance: null, projected: 3500000 },
+  { year: '2030', actual: null, budget: null, performance: null, projected: 3650000 }
 ];
 
 const BudgetSuggestion = ({ selectedCanton, selectedAccount }: BudgetSuggestionProps) => {
@@ -175,9 +175,16 @@ const BudgetSuggestion = ({ selectedCanton, selectedAccount }: BudgetSuggestionP
                   }} 
                 />
                 <Bar 
-                  dataKey="actual" 
+                  dataKey="budget" 
+                  stackId="a"
                   fill="#0ea5e9" 
-                  name="Historical Budget"
+                  name="Budget"
+                />
+                <Bar 
+                  dataKey="performance" 
+                  stackId="a"
+                  fill={({ performance }) => (performance >= 0 ? "#22c55e" : "#ea384c")}
+                  name="Performance Delta"
                 />
                 <Bar 
                   dataKey="projected" 
