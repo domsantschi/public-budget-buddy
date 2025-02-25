@@ -1,4 +1,3 @@
-
 import { useEffect, useState } from "react";
 import { Card } from "./ui/card";
 import { Button } from "./ui/button";
@@ -18,6 +17,7 @@ import {
 import {
   BarChart,
   Bar,
+  Cell,
   XAxis,
   YAxis,
   CartesianGrid,
@@ -71,16 +71,15 @@ const BudgetSuggestion = ({ selectedCanton, selectedAccount }: BudgetSuggestionP
   const [showDetails, setShowDetails] = useState(false);
 
   useEffect(() => {
-    // Simulate API call with randomized data
     const baseAmount = 2750000;
-    const randomVariation = Math.floor(Math.random() * 500000) - 250000; // Random variation ±250,000
-    const randomChange = +(Math.random() * 16 - 8).toFixed(1); // Random change between -8% and +8%
+    const randomVariation = Math.floor(Math.random() * 500000) - 250000;
+    const randomChange = +(Math.random() * 16 - 8).toFixed(1);
     setSuggestion({
       amount: baseAmount + randomVariation,
       change: randomChange,
-      confidence: Math.floor(Math.random() * 15 + 85) // Random confidence between 85% and 99%
+      confidence: Math.floor(Math.random() * 15 + 85)
     });
-  }, [selectedCanton, selectedAccount]); // Re-run when filters change
+  }, [selectedCanton, selectedAccount]);
 
   const formatCHF = (amount: number) => {
     return amount.toLocaleString('de-CH', { 
@@ -183,9 +182,15 @@ const BudgetSuggestion = ({ selectedCanton, selectedAccount }: BudgetSuggestionP
                 <Bar 
                   dataKey="performance" 
                   stackId="a"
-                  fill={({ performance }) => (performance >= 0 ? "#22c55e" : "#ea384c")}
                   name="Performance Delta"
-                />
+                >
+                  {historicalData.map((entry, index) => (
+                    <Cell 
+                      key={`cell-${index}`}
+                      fill={entry.performance >= 0 ? "#22c55e" : "#ea384c"}
+                    />
+                  ))}
+                </Bar>
                 <Bar 
                   dataKey="projected" 
                   fill="url(#projectedPattern)" 
