@@ -15,6 +15,13 @@ import {
 import { DialogTitle } from "@/components/ui/dialog";
 import { useNavigate } from "react-router-dom";
 import { Badge } from "./ui/badge";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 
 interface BudgetAccount {
   id: number;
@@ -23,11 +30,41 @@ interface BudgetAccount {
   category: string;
 }
 
+const SWISS_CANTONS = [
+  { value: "ZH", label: "Zürich" },
+  { value: "BE", label: "Bern" },
+  { value: "LU", label: "Luzern" },
+  { value: "UR", label: "Uri" },
+  { value: "SZ", label: "Schwyz" },
+  { value: "OW", label: "Obwalden" },
+  { value: "NW", label: "Nidwalden" },
+  { value: "GL", label: "Glarus" },
+  { value: "ZG", label: "Zug" },
+  { value: "FR", label: "Freiburg" },
+  { value: "SO", label: "Solothurn" },
+  { value: "BS", label: "Basel-Stadt" },
+  { value: "BL", label: "Basel-Landschaft" },
+  { value: "SH", label: "Schaffhausen" },
+  { value: "AR", label: "Appenzell Ausserrhoden" },
+  { value: "AI", label: "Appenzell Innerrhoden" },
+  { value: "SG", label: "St. Gallen" },
+  { value: "GR", label: "Graubünden" },
+  { value: "AG", label: "Aargau" },
+  { value: "TG", label: "Thurgau" },
+  { value: "TI", label: "Ticino" },
+  { value: "VD", label: "Vaud" },
+  { value: "VS", label: "Valais" },
+  { value: "NE", label: "Neuchâtel" },
+  { value: "GE", label: "Geneva" },
+  { value: "JU", label: "Jura" },
+];
+
 const SearchBar = () => {
   const [open, setOpen] = useState(false);
   const [search, setSearch] = useState("");
   const [accounts, setAccounts] = useState<BudgetAccount[]>([]);
   const [loading, setLoading] = useState(false);
+  const [selectedCanton, setSelectedCanton] = useState<string>("");
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -35,7 +72,6 @@ const SearchBar = () => {
       try {
         setLoading(true);
         
-        // If search is empty, fetch all accounts
         if (!search.trim()) {
           const { data, error } = await supabase
             .from('budget_accounts')
@@ -47,7 +83,6 @@ const SearchBar = () => {
           return;
         }
 
-        // Search by name and number
         const { data, error } = await supabase
           .from('budget_accounts')
           .select('*')
@@ -67,7 +102,6 @@ const SearchBar = () => {
       }
     };
 
-    // Debounce search to avoid too many requests
     const timeoutId = setTimeout(searchAccounts, 300);
     return () => clearTimeout(timeoutId);
   }, [search]);
@@ -96,7 +130,6 @@ const SearchBar = () => {
     return colors[category] || 'bg-gray-500';
   };
 
-  // Client-side filtering for categories
   const filteredAccounts = accounts.filter(account => {
     if (!search.trim()) return true;
     
@@ -108,7 +141,22 @@ const SearchBar = () => {
   });
 
   return (
-    <>
+    <div className="space-y-4">
+      <div className="w-full max-w-xs">
+        <Select value={selectedCanton} onValueChange={setSelectedCanton}>
+          <SelectTrigger className="w-full">
+            <SelectValue placeholder="Select a canton" />
+          </SelectTrigger>
+          <SelectContent>
+            {SWISS_CANTONS.map((canton) => (
+              <SelectItem key={canton.value} value={canton.value}>
+                {canton.label}
+              </SelectItem>
+            ))}
+          </SelectContent>
+        </Select>
+      </div>
+
       <div className="relative w-full max-w-xl">
         <div className="absolute inset-y-0 left-3 flex items-center pointer-events-none">
           <Search className="h-4 w-4 text-muted-foreground" />
@@ -173,7 +221,7 @@ const SearchBar = () => {
           )}
         </CommandList>
       </CommandDialog>
-    </>
+    </div>
   );
 };
 
