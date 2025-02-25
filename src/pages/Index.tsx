@@ -3,6 +3,7 @@ import SearchBar from "@/components/SearchBar";
 import BudgetSuggestion from "@/components/BudgetSuggestion";
 import ExplanationPanel from "@/components/ExplanationPanel";
 import ChatInterface from "@/components/ChatInterface";
+import ExportPreview from "@/components/ExportPreview";
 import { useState } from "react";
 
 const Index = () => {
@@ -16,7 +17,7 @@ const Index = () => {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-background to-muted p-6 lg:p-8">
-      <div className="max-w-7xl mx-auto space-y-8">
+      <div className="max-w-[1800px] mx-auto space-y-8">
         {/* Header */}
         <div className="space-y-4">
           <h1 className="text-4xl font-bold tracking-tight">Public Budget Planning</h1>
@@ -31,24 +32,28 @@ const Index = () => {
           />
         </div>
 
-        {/* Main Content */}
-        <div className="grid gap-6 lg:grid-cols-7">
-          {/* Left Column - Budget Suggestion */}
-          <div className="lg:col-span-2">
+        {/* Main Content - Three Column Layout */}
+        <div className="grid gap-6 lg:grid-cols-3">
+          {/* Left Column - Budget Analysis */}
+          <div className="space-y-6">
             <BudgetSuggestion 
               selectedCanton={selectedCanton}
               selectedAccount={selectedAccount}
             />
-          </div>
-
-          {/* Middle Column - Explanation */}
-          <div className="lg:col-span-2">
             <ExplanationPanel />
           </div>
 
-          {/* Right Column - Chat */}
-          <div className="lg:col-span-3">
+          {/* Middle Column - Chat */}
+          <div>
             <ChatInterface />
+          </div>
+
+          {/* Right Column - Export Preview */}
+          <div>
+            <ExportPreview 
+              selectedCanton={selectedCanton}
+              selectedAccount={selectedAccount}
+            />
           </div>
         </div>
       </div>
