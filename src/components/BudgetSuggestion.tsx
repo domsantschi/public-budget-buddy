@@ -4,7 +4,7 @@ import { Card } from "./ui/card";
 import { Button } from "./ui/button";
 import { 
   ChevronRight, 
-  DollarSign, 
+  Coins, 
   TrendingUp,
   X 
 } from "lucide-react";
@@ -66,13 +66,24 @@ const BudgetSuggestion = () => {
   const [showDetails, setShowDetails] = useState(false);
 
   useEffect(() => {
-    // Simulate API call with mock data
+    // Simulate API call with randomized data
+    const baseAmount = 2750000;
+    const randomVariation = Math.floor(Math.random() * 500000) - 250000; // Random variation ±250,000
     setSuggestion({
-      amount: 2750000,
-      change: 5.2,
-      confidence: 92
+      amount: baseAmount + randomVariation,
+      change: +(Math.random() * 8 + 2).toFixed(1), // Random change between 2% and 10%
+      confidence: Math.floor(Math.random() * 15 + 85) // Random confidence between 85% and 99%
     });
   }, []);
+
+  const formatCHF = (amount: number) => {
+    return amount.toLocaleString('de-CH', { 
+      style: 'currency', 
+      currency: 'CHF',
+      minimumFractionDigits: 0,
+      maximumFractionDigits: 0
+    });
+  };
 
   return (
     <>
@@ -85,9 +96,9 @@ const BudgetSuggestion = () => {
         </div>
         
         <div className="flex items-baseline space-x-2">
-          <DollarSign className="h-6 w-6 text-muted-foreground" />
+          <Coins className="h-6 w-6 text-muted-foreground" />
           <span className="text-3xl font-bold">
-            {suggestion.amount.toLocaleString()}
+            {formatCHF(suggestion.amount)}
           </span>
         </div>
 
@@ -132,10 +143,10 @@ const BudgetSuggestion = () => {
                   tick={{ fontSize: 12 }}
                 />
                 <YAxis 
-                  tickFormatter={(value) => `$${(value/1000000).toFixed(1)}M`}
+                  tickFormatter={(value) => `CHF ${(value/1000000).toFixed(1)}M`}
                 />
                 <Tooltip 
-                  formatter={(value) => [`$${Number(value).toLocaleString()}`, '']}
+                  formatter={(value) => [formatCHF(Number(value)), '']}
                 />
                 <Legend />
                 <ReferenceLine 
