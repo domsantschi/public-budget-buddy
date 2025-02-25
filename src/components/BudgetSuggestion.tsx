@@ -6,7 +6,7 @@ import {
   ChevronRight, 
   Coins, 
   TrendingUp,
-  X 
+  TrendingDown 
 } from "lucide-react";
 import {
   Dialog,
@@ -74,9 +74,10 @@ const BudgetSuggestion = ({ selectedCanton, selectedAccount }: BudgetSuggestionP
     // Simulate API call with randomized data
     const baseAmount = 2750000;
     const randomVariation = Math.floor(Math.random() * 500000) - 250000; // Random variation ±250,000
+    const randomChange = +(Math.random() * 16 - 8).toFixed(1); // Random change between -8% and +8%
     setSuggestion({
       amount: baseAmount + randomVariation,
-      change: +(Math.random() * 8 + 2).toFixed(1), // Random change between 2% and 10%
+      change: randomChange,
       confidence: Math.floor(Math.random() * 15 + 85) // Random confidence between 85% and 99%
     });
   }, [selectedCanton, selectedAccount]); // Re-run when filters change
@@ -108,8 +109,17 @@ const BudgetSuggestion = ({ selectedCanton, selectedAccount }: BudgetSuggestionP
         </div>
 
         <div className="flex items-center space-x-2 text-sm">
-          <TrendingUp className="h-4 w-4 text-green-500" />
-          <span className="text-green-500">+{suggestion.change}% from previous year</span>
+          {suggestion.change >= 0 ? (
+            <>
+              <TrendingUp className="h-4 w-4 text-green-500" />
+              <span className="text-green-500">+{suggestion.change}% from previous year</span>
+            </>
+          ) : (
+            <>
+              <TrendingDown className="h-4 w-4 text-[#ea384c]" />
+              <span className="text-[#ea384c]">{suggestion.change}% from previous year</span>
+            </>
+          )}
         </div>
 
         <Button 
