@@ -115,7 +115,7 @@ const ExportPreview = ({
           <section className="space-y-4">
             <h4 className="font-semibold">Budget Comparison</h4>
             
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div className="space-y-4">
               <div className="bg-white/80 p-5 rounded-md border shadow-sm">
                 <div className="text-sm text-muted-foreground mb-1">Your Estimate:</div>
                 <div className="text-xl font-bold">
