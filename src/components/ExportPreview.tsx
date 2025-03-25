@@ -1,4 +1,3 @@
-
 import { Card } from "./ui/card";
 import { Button } from "./ui/button";
 import { Download, Coins, TrendingUp, TrendingDown, AlertCircle } from "lucide-react";
@@ -24,7 +23,6 @@ const ExportPreview = ({ selectedCanton, selectedAccount }: ExportPreviewProps) 
   const [percentageDiff, setPercentageDiff] = useState<number>(0);
 
   useEffect(() => {
-    // Simulate AI suggestion changes when the canton or account changes
     if (selectedCanton || selectedAccount) {
       const baseAmount = 2750000;
       const randomVariation = Math.floor(Math.random() * 500000) - 250000;
@@ -33,12 +31,10 @@ const ExportPreview = ({ selectedCanton, selectedAccount }: ExportPreviewProps) 
   }, [selectedCanton, selectedAccount]);
 
   useEffect(() => {
-    // Calculate difference when user input or AI suggestion changes
     const userValue = userEstimate ? parseFloat(userEstimate.replace(/[^\d.-]/g, '')) : 0;
     const diff = userValue - aiSuggestion;
     setDifference(diff);
     
-    // Calculate percentage difference
     if (aiSuggestion !== 0) {
       setPercentageDiff((diff / aiSuggestion) * 100);
     } else {
@@ -68,13 +64,12 @@ const ExportPreview = ({ selectedCanton, selectedAccount }: ExportPreviewProps) 
         </div>
         <Button variant="outline" size="sm">
           <Download className="h-4 w-4 mr-2" />
-          Export Report
+          Save Comparison
         </Button>
       </div>
 
       <div className="flex-1 overflow-auto p-4">
         <div className="space-y-6">
-          {/* User Budget Estimate Input */}
           <section className="space-y-2">
             <h4 className="font-semibold">Your Budget Estimate</h4>
             <div className="flex items-center space-x-2">
@@ -88,7 +83,6 @@ const ExportPreview = ({ selectedCanton, selectedAccount }: ExportPreviewProps) 
             </div>
           </section>
 
-          {/* Comparison Results */}
           <section className="space-y-4">
             <h4 className="font-semibold">Budget Comparison</h4>
             
@@ -106,7 +100,6 @@ const ExportPreview = ({ selectedCanton, selectedAccount }: ExportPreviewProps) 
               </div>
             </div>
 
-            {/* Difference */}
             <div className="bg-blue-50 p-3 rounded-md border border-blue-100">
               <div className="flex justify-between items-center">
                 <div className="text-sm font-medium text-blue-800">Potential Budgetary Slack:</div>
@@ -156,7 +149,6 @@ const ExportPreview = ({ selectedCanton, selectedAccount }: ExportPreviewProps) 
             </div>
           </section>
 
-          {/* Additional Notes */}
           <section className="space-y-2">
             <h4 className="font-semibold">Additional Notes</h4>
             <Textarea

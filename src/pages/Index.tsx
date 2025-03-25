@@ -34,7 +34,15 @@ const Index = () => {
 
         {/* Main Content - Three Column Layout with consistent spacing */}
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-          {/* Left Column - Budget Analysis */}
+          {/* Left Column - Budget Input/Comparison */}
+          <div className="w-full">
+            <ExportPreview 
+              selectedCanton={selectedCanton}
+              selectedAccount={selectedAccount}
+            />
+          </div>
+
+          {/* Middle Column - Static Explanation */}
           <div className="space-y-6 w-full">
             <BudgetSuggestion 
               selectedCanton={selectedCanton}
@@ -43,17 +51,9 @@ const Index = () => {
             <ExplanationPanel />
           </div>
 
-          {/* Middle Column - Chat */}
+          {/* Right Column - Chat Interface */}
           <div className="w-full">
             <ChatInterface />
-          </div>
-
-          {/* Right Column - Export Preview */}
-          <div className="w-full">
-            <ExportPreview 
-              selectedCanton={selectedCanton}
-              selectedAccount={selectedAccount}
-            />
           </div>
         </div>
       </div>
