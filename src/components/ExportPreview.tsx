@@ -13,22 +13,14 @@ interface ExportPreviewProps {
     name: string;
     category: string;
   } | null;
+  aiSuggestion: number;
 }
 
-const ExportPreview = ({ selectedCanton, selectedAccount }: ExportPreviewProps) => {
+const ExportPreview = ({ selectedCanton, selectedAccount, aiSuggestion }: ExportPreviewProps) => {
   const [notes, setNotes] = useState("");
   const [userEstimate, setUserEstimate] = useState<string>("");
-  const [aiSuggestion, setAiSuggestion] = useState<number>(2750000);
   const [difference, setDifference] = useState<number>(0);
   const [percentageDiff, setPercentageDiff] = useState<number>(0);
-
-  useEffect(() => {
-    if (selectedCanton || selectedAccount) {
-      const baseAmount = 2750000;
-      const randomVariation = Math.floor(Math.random() * 500000) - 250000;
-      setAiSuggestion(baseAmount + randomVariation);
-    }
-  }, [selectedCanton, selectedAccount]);
 
   useEffect(() => {
     const userValue = userEstimate ? parseFloat(userEstimate.replace(/[^\d.-]/g, '')) : 0;

@@ -1,4 +1,3 @@
-
 import { useEffect, useState } from "react";
 import { Card } from "./ui/card";
 import { Button } from "./ui/button";
@@ -49,6 +48,7 @@ interface BudgetSuggestion {
 interface BudgetSuggestionProps {
   selectedCanton?: string;
   selectedAccount?: { id: number; account_number: number; name: string; category: string; } | null;
+  onSuggestionChange?: (amount: number) => void;
 }
 
 const historicalData = [
@@ -75,7 +75,7 @@ const historicalData = [
   { year: '2030', actual: null, budget: null, performance: null, projected: 3650000 }
 ];
 
-const BudgetSuggestion = ({ selectedCanton, selectedAccount }: BudgetSuggestionProps) => {
+const BudgetSuggestion = ({ selectedCanton, selectedAccount, onSuggestionChange }: BudgetSuggestionProps) => {
   const [suggestion, setSuggestion] = useState<BudgetSuggestion>({
     amount: 0,
     change: 0,
@@ -112,13 +112,20 @@ const BudgetSuggestion = ({ selectedCanton, selectedAccount }: BudgetSuggestionP
       }
     ];
     
+    const newAmount = baseAmount + randomVariation;
+    
     setSuggestion({
-      amount: baseAmount + randomVariation,
+      amount: newAmount,
       change: randomChange,
       confidence: Math.floor(Math.random() * 15 + 85),
       shapValues: mockShapValues
     });
-  }, [selectedCanton, selectedAccount]);
+    
+    // Pass the suggestion amount up to the parent component
+    if (onSuggestionChange) {
+      onSuggestionChange(newAmount);
+    }
+  }, [selectedCanton, selectedAccount, onSuggestionChange]);
 
   const formatCHF = (amount: number) => {
     return amount.toLocaleString('de-CH', { 

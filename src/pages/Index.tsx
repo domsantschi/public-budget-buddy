@@ -14,6 +14,7 @@ const Index = () => {
     name: string;
     category: string;
   } | null>(null);
+  const [budgetSuggestion, setBudgetSuggestion] = useState<number>(2750000);
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-background to-muted p-6 lg:p-8">
@@ -39,6 +40,7 @@ const Index = () => {
             <ExportPreview 
               selectedCanton={selectedCanton}
               selectedAccount={selectedAccount}
+              aiSuggestion={budgetSuggestion}
             />
           </div>
 
@@ -47,6 +49,7 @@ const Index = () => {
             <BudgetSuggestion 
               selectedCanton={selectedCanton}
               selectedAccount={selectedAccount}
+              onSuggestionChange={setBudgetSuggestion}
             />
             <ExplanationPanel />
           </div>
